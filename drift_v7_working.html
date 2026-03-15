@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driftball Multiplayer</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .leaderboard { margin-top: 20px; }
+        .leaderboard table { width: 100%; border-collapse: collapse; }
+        .leaderboard th, .leaderboard td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <h1>Driftball Multiplayer</h1>
+    <div id="gameArea">
+        <!-- Game implementation goes here -->
+        <button id="startGame">Start Game</button>
+    </div>
+    <div class="leaderboard">
+        <h2>Leaderboard</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+            </tbody>
+        </table>
+    </div>
+    <script>
+        let scores = JSON.parse(localStorage.getItem('leaderboard')) || {};
+        const leaderboardBody = document.getElementById('leaderboardBody');
+
+        function updateLeaderboard() {
+            leaderboardBody.innerHTML = '';
+            for (const player in scores) {
+                const score = scores[player];
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${player}</td><td>${score}</td>`;
+                leaderboardBody.appendChild(row);
+            }
+        }
+
+        document.getElementById('startGame').addEventListener('click', () => {
+            const playerName = prompt('Enter your name:');
+            let playerScore = Math.floor(Math.random() * 100); // Simulating score
+            if (playerName) {
+                alert(`Your score is: ${playerScore}`);
+                scores[playerName] = playerScore;
+                localStorage.setItem('leaderboard', JSON.stringify(scores));
+                updateLeaderboard();
+            }
+        });
+
+        updateLeaderboard(); // Initial leaderboard update on page load
+    </script>
+</body>
+</html>
